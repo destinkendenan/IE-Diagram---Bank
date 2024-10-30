@@ -1,0 +1,125 @@
+@startuml
+entity "Nasabah" {
+    +NasabahID : int
+    --
+    Nama : string
+    Alamat : string
+    Telepon : int
+    Email : string
+    Status : string
+}
+entity "Profil_Nasabah" {
+    Pendapatan_per_tahun : int
+    Pekerjaan : int
+    Tanggal_lahir : date
+}
+entity "Rekening" {
+    +RekeningID : int
+    --
+    NasabahID : int <<FK>>
+    --
+    Tipe : string
+    Saldo : int
+    TanggalPembukaan : date
+    Status : string
+}
+entity "Transaksi" {
+    +TransaksiID : int
+    --
+    NasabahID : int <<FK>>
+    --
+    Tanggal : date
+    Jumlah : int
+    TipeTransaksi : string
+}
+entity "Detail_Transaksi" {
+    +DetailTransaksiID : int
+    ---
+    TransaksiID : int <<FK>>
+    RekeningID : int <<FK>>
+    NasabahID : <<FK>>
+    --
+    Keterangan : string
+}
+entity "Karyawan" {
+    +KaryawanID : int
+    --
+    Nama : string
+    Jabatan : string
+    Gaji : int
+    TanggalBergabung : date
+    Status : string
+}
+entity "Cabang" {
+    +CabangID : int
+    --
+    Lokasi : string
+    JamOperasional : time
+    Telepon : int
+}
+entity "Pinjaman" {
+    +PinjamanID : int
+    --
+    NasabahID : int <<FK>>
+    --
+    Jumlah : int
+    SukuBunga : int
+    TanggalPeminjaman : date
+    JangkaWaktu : int
+}
+entity "Pembayaran_Pinjam" {
+    +PembayaranID : int
+    --
+    PinjamanID : int <<FK>>
+    --
+    Tanggal : date
+    Jumlah : int
+    Status : string
+}
+entity "ATM" {
+    +ATM_ID : int
+    --
+    CabangID : int <<FK>>
+    --
+    Lokasi : string
+    Status : string
+    Tipe : string
+}
+entity "PinjamanRumah" {
+    AlamatRumah : string
+    TipeRumah : string
+    StatusRumah : string
+}
+entity "PinjamanMobil" {
+    TipeMobil : string
+    TahunMobil : string
+    StatusMobil : string
+}
+entity "RekeningTabungan" {
+    BiayaAdministrasi : int
+    BungaTabungan : int
+    LimitPenarikan : int
+    SetoranMinimum : int
+}
+entity "RekeningGiro"{
+    BiayaAdministrasiGiro : int
+    FasilitasCek : string
+    LimitPenarikan : string
+    BungaGiro : int
+}
+Karyawan ||--o{ Nasabah : "melayani"
+Nasabah ||--o{ Rekening : "memiliki"
+Nasabah ||--o{ Pinjaman : "memiliki"
+Nasabah ||--|| Profil_Nasabah : "memiliki"
+Rekening }O--o{ Transaksi : "memiliki"
+Rekening ||--o| RekeningGiro : "ISA"
+Rekening ||--o| RekeningTabungan : "ISA"
+Transaksi }O--o{ Detail_Transaksi : "memiliki"
+Karyawan ||--o{ Cabang : "memiliki"
+Cabang ||--o{ ATM : "memiliki"
+Cabang ||--o{ Nasabah : "memiliki"
+Pinjaman ||--o{ Pembayaran_Pinjam : "memiliki"
+Pinjaman ||--o| PinjamanRumah : "ISA"
+Pinjaman ||--o| PinjamanMobil : "ISA"
+
+@enduml
