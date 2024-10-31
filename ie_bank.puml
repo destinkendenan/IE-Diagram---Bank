@@ -2,6 +2,8 @@
 entity "Nasabah" {
     +NasabahID : int
     --
+    CabangID : int <<FK>>
+    --
     Nama : string
     Alamat : string
     Telepon : int
@@ -9,6 +11,10 @@ entity "Nasabah" {
     Status : string
 }
 entity "Profil_Nasabah" {
+    +Profil_ID : int
+    --
+    NasabahID : int <<FK>>
+    --
     Pendapatan_per_tahun : int
     Pekerjaan : int
     Tanggal_lahir : date
@@ -17,16 +23,18 @@ entity "Rekening" {
     +RekeningID : int
     --
     NasabahID : int <<FK>>
+    TransaksiID : int <<FK>>
     --
     Tipe : string
     Saldo : int
     TanggalPembukaan : date
-    Status : string
+    Status_rekening : string
 }
 entity "Transaksi" {
     +TransaksiID : int
     --
     NasabahID : int <<FK>>
+    RekeningID: int <<FK>>
     --
     Tanggal : date
     Jumlah : int
@@ -37,25 +45,26 @@ entity "Detail_Transaksi" {
     ---
     TransaksiID : int <<FK>>
     RekeningID : int <<FK>>
-    NasabahID : <<FK>>
     --
     Keterangan : string
 }
 entity "Karyawan" {
     +KaryawanID : int
     --
+    CabangID : int <<FK>>
+    --
     Nama : string
     Jabatan : string
     Gaji : int
     TanggalBergabung : date
-    Status : string
+    Email_karyawan : string
 }
 entity "Cabang" {
     +CabangID : int
     --
-    Lokasi : string
+    Lokasi_cabang : string
     JamOperasional : time
-    Telepon : int
+    No_telepon_cabang : int
 }
 entity "Pinjaman" {
     +PinjamanID : int
@@ -81,7 +90,7 @@ entity "ATM" {
     --
     CabangID : int <<FK>>
     --
-    Lokasi : string
+    Lokasi_ATM : string
     Status : string
     Tipe : string
 }
@@ -121,5 +130,4 @@ Cabang ||--o{ Nasabah : "memiliki"
 Pinjaman ||--o{ Pembayaran_Pinjam : "memiliki"
 Pinjaman ||--o| PinjamanRumah : "ISA"
 Pinjaman ||--o| PinjamanMobil : "ISA"
-
 @enduml
